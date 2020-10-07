@@ -11,3 +11,4 @@ def prepocet():
 
     print(f"{hodiny} hodin, {minuty} minut, {sekundy} sekund")
 prepocet()
+
