@@ -12,6 +12,11 @@ def nsd(a,b):
     else:
         return nsd(b, a%b)
 
+def nsd2(a,b):
+    while b > 0:
+        a, b = b, a%b
+    return x
+
 d = nsd(x, y)
 
 x = x // d

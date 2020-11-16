@@ -8,14 +8,6 @@ radky_ze_vstupu = []
 for radek in sys.stdin:
     radky_ze_vstupu.append(radek)
 
-temp_list = list(map(''.join, radky_ze_vstupu))
-
-def listToString(s):  
-    str1 = " "  
-    return (str1.join(s)) 
-
-user_input = listToString(temp_list)
-    
 
 #  frekvence znaku od a do z v abecedach
 Alphabet=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r',
@@ -29,20 +21,16 @@ cz_freq = [8.421, 0.822, 0.740, 3.475, 7.562, 0.084, 0.092, 1.356, 6.073, 1.433,
            2.894, 3.802, 2.446, 6.468, 6.695, 1.906, 0.001, 4.799, 5.212, 5.727,
            2.160, 5.344, 0.016, 0.027, 1.043, 1.503]
 
-# split inputu na jednotliva pismena bez dalsich znaku
+# split inputu na jednotliva pismena bez mezer
 def CharSplit(vstup):
-    temporary = list(vstup)
-    char_list = []
-    #vybrat z toho jen pismena
-    for i in temporary:
-        i = i.upper()
-        if ord(i) in range(65, 91): #pro tento ord to jsou uppercase letters
-            char_list.append(i)
+    char_list = list(vstup)
+    for index, i in enumerate(char_list):
+        if  i == ' ':
+            del char_list[index] #odstraneni mezer
     return char_list
 
 
 char_list = CharSplit(user_input)
-
 
 # udelame si mapu procentuelniho zastoupeni znaku v nasem inputu
 # jsou i jednodussi metody, ale nam se hodi,
@@ -50,7 +38,7 @@ char_list = CharSplit(user_input)
 def FindFreq(char_list):
     frequency_map=[]
     for i in range(0,26): 
-        x = (char_list.count(Alphabet[i].upper()))
+        x = (char_list.count(Alphabet[i]))
         x = x / len(char_list)
         frequency_map.append(x)
     return frequency_map
@@ -69,24 +57,21 @@ def ConFromPerc(int_list):
 
     return int_list
 
-#konvertujeme si tedy jak EN tak CZ mapu
-en_freq = ConToPerc(en_freq)
-cz_freq = ConToPerc(cz_freq)
-
+frequency_map = ConFromPerc(frequency_map)
 
 def ChiSquare(observed, expected):
-    temporary = 0
-    for i in range(0, 26): #26 pismen, 26 volani
+    temporary=[]
+    for i in range(0, 25):
         chi_squared_stat = (((observed[i]-expected[i])**2)/expected[i])
-        temporary += chi_squared_stat
-    stat = temporary
+        temporary.append(chi_squared_stat)
+    stat = sum(temporary)
     return stat
 
 
 a = (ChiSquare(frequency_map, en_freq))
 b = (ChiSquare(frequency_map, cz_freq))
 
-print(f"Match with English: {a: .2f}")
+print(f"Match with English: {a:.2f}")
 print(f"Match with Czech: {b:.2f}")
 if a<b:
     print("Text is in English")
