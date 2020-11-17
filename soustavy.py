@@ -63,11 +63,25 @@ def fromDeci(vysledek, soustava, inputNum):
 
 vysledek = "" #protoze je to argument
 
-sous1 = int(input())
-x1= input()
-sous2 = int(input())
-x2 = input()
-end_sous = int(input())
+string_a = input()
+#ziskani listu integeru z inputu
+int_list = list(map(int, string_a.strip().split()))
+my_list = []
+
+#odstraneni vsech int za -1, ktera uz neni v zadani
+while True:
+    for i in int_list:
+        if i == -1:
+            break
+        else:
+            my_list.append(i)
+    break
+
+sous1 = my_list[0]
+x1= str(my_list[1])
+sous2 = my_list[2]
+x2 = str(my_list[3])
+end_sous = my_list[4]
 
 a = toDeci(x1, sous1)
 b = toDeci(x2, sous2)
